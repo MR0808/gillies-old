@@ -12,8 +12,29 @@ var meetingSchema = new Schema(
                 ref: 'User'
             }
         ],
-        quaich: String,
-        whiskies: [{ name: String }]
+        quaich: {
+            name: String,
+            votes: [
+                {
+                    user: {
+                        type: Schema.Types.ObjectId,
+                        ref: 'User'
+                    },
+                    score: Number
+                }
+            ]
+        },
+        whiskies: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: 'Whisky'
+            }
+        ],
+        status: {
+            type: String,
+            enum: ['Open', 'Closed'],
+            default: 'Open'
+        }
     },
     { timestamps: true }
 );

@@ -148,7 +148,6 @@ export async function getCreateMeeting(req, res, next) {
 export async function postCreateMeeting(req, res, next) {
     const body = req.body;
     const errors = validationResult(req);
-    console.log(errors);
     if (!errors.isEmpty()) {
         const meetingDate = body.meetingDate;
         return res.status(422).render('admin/createMeeting', {
@@ -166,49 +165,11 @@ export async function postCreateMeeting(req, res, next) {
         const meeting = new Meeting({
             meetingDate: meetingDate,
             meetingLocation: body.meetingLocation,
-            quaich: {
-                name: body.quaich
-            },
+            quaich: body.quaich,
             users: body.users
         });
         const newMeeting = await meeting.save();
-        const whisky1 = new Whisky({
-            name: body.whisky1,
-            meeting: newMeeting
-        });
-        let whisky = await whisky1.save();
-        newMeeting.whiskies.push(whisky);
-        const whisky2 = new Whisky({
-            name: body.whisky2,
-            meeting: newMeeting
-        });
-        whisky = await whisky2.save();
-        newMeeting.whiskies.push(whisky);
-        const whisky3 = new Whisky({
-            name: body.whisky3,
-            meeting: newMeeting
-        });
-        whisky = await whisky3.save();
-        newMeeting.whiskies.push(whisky);
-        const whisky4 = new Whisky({
-            name: body.whisky4,
-            meeting: newMeeting
-        });
-        whisky = await whisky4.save();
-        newMeeting.whiskies.push(whisky);
-        const whisky5 = new Whisky({
-            name: body.whisky5,
-            meeting: newMeeting
-        });
-        whisky = await whisky5.save();
-        newMeeting.whiskies.push(whisky);
-        const whisky6 = new Whisky({
-            name: body.whisky6,
-            meeting: newMeeting
-        });
-        whisky = await whisky6.save();
-        newMeeting.whiskies.push(whisky);
-        await newMeeting.save();
+        const whisky1 = new Whisky();
         return res.redirect('/admin/meetings');
     } catch (err) {
         console.log(err);
@@ -217,6 +178,46 @@ export async function postCreateMeeting(req, res, next) {
         return next(error);
     }
 }
+
+// export async function postCreateMeeting(req, res, next) {
+//     const body = req.body;
+//     const errors = validationResult(req);
+//     if (!errors.isEmpty()) {
+//         const meetingDate = body.meetingDate;
+//         return res.status(422).render('admin/createMeeting', {
+//             path: '/createMeeting',
+//             pageTitle: 'Create Meeting',
+//             editing: false,
+//             hasError: true,
+//             meeting: body,
+//             validationErrors: errors.array(),
+//             meetingDate: meetingDate
+//         });
+//     }
+//     try {
+//         let meetingDate = new Date(body.meetingDate);
+//         console.log(body.whiskies);
+//         let whiskies = {};
+//         for (let whisky of body.whiskies) {
+//             Object.assign(whiskies, { name: whisky });
+//         }
+//         console.log(whiskies);
+//         const meeting = new Meeting({
+//             meetingDate: meetingDate,
+//             meetingLocation: body.meetingLocation,
+//             quaich: body.quaich,
+//             whiskies: whiskies,
+//             users: body.users
+//         });
+//         await meeting.save();
+//         return res.redirect('/admin/meetings');
+//     } catch (err) {
+//         console.log(err);
+//         const error = new Error(err);
+//         error.httpStatusCode = 500;
+//         return next(error);
+//     }
+// }
 
 export async function getEditMeeting(req, res, next) {
     const meetingId = req.query.meetingId;
@@ -265,11 +266,14 @@ export async function postEditMeeting(req, res, next) {
                 meetingDate: body.meetingDate
             });
         }
+        const whiskies = body.whiskies.map((whisky) => {
+            return { name: whisky };
+        });
         const meeting = await Meeting.findById(meetingId);
-        let meetingDate = new Date(body.meetingDate);
-        // meeting.meetingDate = meetingDate;
-        // meeting.meetingLocation = body.meetingLocation;
-        // meeting.quaich.name = body.quaich;
+        meeting.meetingDate = body.meetingDate;
+        meeting.meetingLocation = body.meetingLocation;
+        meeting.quaich = body.quaich;
+        meeting.whiskies = whiskies;
         meeting.users = body.users;
         await meeting.save();
         return res.redirect('/admin/meetings');

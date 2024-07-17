@@ -58,3 +58,13 @@ export const editUser = [
         .exists({ checkFalsy: true })
         .withMessage('Please enter a last name')
 ];
+
+export const meeting = [
+    body('meetingDate', 'Please enter a valid date')
+        .exists({ checkFalsy: true })
+        .bail()
+        .isDate({ format: 'YYYY-MM-DD' }),
+    body('meetingLocation', 'Please enter a location').exists({
+        checkFalsy: true
+    })
+];

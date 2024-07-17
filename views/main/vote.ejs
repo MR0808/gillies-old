@@ -1,0 +1,35 @@
+<%- include('../includes/header.ejs') %>
+
+<body>
+    <%- include('../includes/navigation.ejs') %>
+
+    <!-- Page content-->
+    <div class="container py-4">
+        <main class="form-signin w-100 m-auto">
+            <div class="table-responsive small">
+                <table class="table table-striped table-sm">
+                    <thead>
+                        <tr>
+                            <th scope="col">Meeting Night</th>
+                            <th scope="col">Location</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% 
+                        for (let meeting of meetings) { %>
+                        <tr>
+                            <td><a href="/vote/<%=meeting._id %>"><%=meeting.meetingDate %></a></td>
+                            <td><%=meeting.meetingLocation %></td>
+                        </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <%- include('../includes/footer.ejs') %>
+
+</body>
+
+</html>

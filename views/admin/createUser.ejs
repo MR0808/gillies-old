@@ -7,36 +7,35 @@
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
             <h1 class="h2"><% if (editing) { %>Edit<% } else { %>Create<% } %> User</h1>
         </div>
-        <div class="table-responsive small">
-            <div class="form-signin w-100">
-                <form action="/admin/users/<% if (editing) { %>edit<% } else { %>create<% } %>" method="POST" novalidate>
-                    <% if (hasError) { %>
-                    <h1 class="h6 mb-3 fw-normal text-danger">Error creating, please try again</h1>
-                    <% } %>
-                    <div class="form-floating">
-                        <input type="text" class="form-control top <%= validationErrors.find( e => e.path === 'username') ? 'invalid' : '' %>" placeholder="Username" name="username" id="username" value="<% if (editing || hasError) { %><%= user.username %><% } %>">
-                        <label for="username">Username</label>
-                    </div>
-                    <div class="form-floating">
-                        <input type="password" class="form-control bottom <%= validationErrors.find( e => e.path === 'password') ? 'invalid' : '' %>" placeholder="Password" name="password" id="password">
-                        <label for="password">Password</label>
-                    </div>
-                    <div class="form-floating">
-                        <input type="text" class="form-control top <%= validationErrors.find( e => e.path === 'firstName') ? 'invalid' : '' %>" placeholder="First Name" name="firstName" id="firstName" value="<% if (editing || hasError) { %><%= user.firstName %><% } %>">
-                        <label for="firstName">First Name</label>
-                    </div>
-                    <div class="form-floating">
-                        <input type="text" class="form-control bottom <%= validationErrors.find( e => e.path === 'lastName') ? 'invalid' : '' %>" placeholder="Last Name" name="lastName" id="lastName" value="<% if (editing || hasError) { %><%= user.lastName %><% } %>">
-                        <label for="lastName">Last Name</label>
-                    </div>
-                    <div class="form-check text-start my-3">&nbsp;</div>
-                    <% if (editing) { %>
-                    <input type="hidden" value="<%= user._id %>" name="userId">
-                    <% } %>
-                    <button class="btn btn-primary w-100 py-2" type="submit"><% if (editing) { %>Update<% } else { %>Create<% } %></button>
-                </form>
+        <form action="/admin/users/<% if (editing) { %>edit<% } else { %>create<% } %>" method="POST" novalidate>
+            <% if (hasError) { %>
+            <h1 class="h6 mb-3 fw-normal text-danger">Error creating, please try again</h1>
+            <% } %>
+            <div class="col-6">
+                <div class="mb-3">
+                    <label for="username" class="form-label">Username</label>
+                    <input type="text" class="form-control <%= validationErrors.find( e => e.path === 'username') ? 'invalid' : '' %>" id="username" name="username" value="<% if (editing || hasError) { %><%= user.username %><% } %>">
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control <%= validationErrors.find( e => e.path === 'password') ? 'invalid' : '' %>" id="password" name="password">
+                </div>
+                <div class="mb-3">
+                    <label for="firstName" class="form-label">First Name</label>
+                    <input type="text" class="form-control <%= validationErrors.find( e => e.path === 'firstName') ? 'invalid' : '' %>" id="firstName" name="firstName" value="<% if (editing || hasError) { %><%= user.firstName %><% } %>">
+                </div>
+                <div class="mb-3">
+                    <label for="lastName" class="form-label">Last Name</label>
+                    <input type="text" class="form-control <%= validationErrors.find( e => e.path === 'lastName') ? 'invalid' : '' %>" id="lastName" name="lastName" value="<% if (editing || hasError) { %><%= user.lastName %><% } %>">
+                </div>
+                <% if (editing) { %>
+                <input type="hidden" value="<%= user._id %>" name="userId">
+                <% } %>
+                <div class="mb-3">
+                    <button type="submit" class="btn btn-primary"><% if (editing) { %>Update<% } else { %>Create<% } %></button>
+                </div>
             </div>
-        </div>
+        </form>
     </main>
     </div>
     </div>

@@ -26,6 +26,7 @@ app.set('views', 'views');
 
 import authRoutes from './routes/auth.js';
 import adminRoutes from './routes/admin.js';
+import mainRoutes from './routes/main.js';
 
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -59,6 +60,7 @@ app.use((req, res, next) => {
     next();
 });
 
+app.use(mainRoutes);
 app.use(authRoutes);
 app.use('/admin', adminRoutes);
 

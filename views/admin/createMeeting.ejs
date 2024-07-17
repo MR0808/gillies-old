@@ -1,0 +1,102 @@
+<%- include('../includes/adminHeader.ejs') %>
+
+<body>
+    <%- include('../includes/adminNav.ejs') %>
+
+
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2"><% if (editing) { %>Edit<% } else { %>Create<% } %> Meeting</h1>
+        </div>
+        <form action="/admin/meetings/<% if (editing) { %>edit<% } else { %>create<% } %>" method="POST" novalidate>
+            <% if (hasError) { %>
+            <h1 class="h6 mb-3 fw-normal text-danger">Error creating, please try again</h1>
+            <% } %>
+            <div class="col-6">
+                <div class="mb-3">
+                    <label for="meetingDate" class="form-label">Meeting Date</label>
+                    <input class="form-control <%= validationErrors.find( e => e.path === 'meetingDate') ? 'invalid' : '' %>" id="meetingDate" name="meetingDate" value="<% if (editing || hasError) { %><%= meetingDate %><% } %>">
+                </div>
+                <div class="mb-3">
+                    <label for="meetingLocation" class="form-label">Meeting Location</label>
+                    <input type="text" class="form-control <%= validationErrors.find( e => e.path === 'meetingLocation') ? 'invalid' : '' %>" id="meetingLocation" name="meetingLocation" value="<% if (editing || hasError) { %><%= meeting.meetingLocation %><% } %>">
+                </div>
+                <% if (!editing) { %>
+                <div class="mb-3">
+                    <label for="quaich" class="form-label">Quaich</label>
+                    <input type="text" class="form-control <%= validationErrors.find( e => e.path === 'quaich') ? 'invalid' : '' %>" id="quaich" name="quaich" value="<% if (editing || hasError) { %><%= meeting.quaich %><% } %>">
+                </div>
+
+                <div class="mb-3 field_wrapper">
+                    <label for="whisky1" class="form-label">Whisky 1</label>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" id="whisky1" name="whisky1">
+                    </div>
+                </div>
+                <div class="mb-3 field_wrapper">
+                    <label for="whisky1" class="form-label">Whisky 2</label>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" id="whisky2" name="whisky2">
+                    </div>
+                </div>
+                <div class="mb-3 field_wrapper">
+                    <label for="whisky1" class="form-label">Whisky 3</label>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" id="whisky3" name="whisky3">
+                    </div>
+                </div>
+                <div class="mb-3 field_wrapper">
+                    <label for="whisky1" class="form-label">Whisky 4</label>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" id="whisky4" name="whisky4">
+                    </div>
+                </div>
+                <div class="mb-3 field_wrapper">
+                    <label for="whisky1" class="form-label">Whisky 5</label>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" id="whisky5" name="whisky5">
+                    </div>
+                </div>
+                <div class="mb-3 field_wrapper">
+                    <label for="whisky1" class="form-label">Whisky 6</label>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" id="whisky6" name="whisky6">
+                    </div>
+                </div>
+                <% } %>
+                <div class="mb-3">
+                    <label class="form-label">Attendees</label>
+                    <div class="mb-3">
+                        <% for (let user of users) { %>
+                        <div class="form-check form-check-inline col-4">
+                            <input class="form-check-input" type="checkbox" id="<%=user._id %>" name="users" value="<%=user._id %>" <% if ((editing || hasError) && meeting.users.includes(user._id)) { %>checked<% } %>>
+                            <label class="form-check-label" for="<%=user._id %>"><%=user.firstName + ' ' + user.lastName %></label>
+                        </div>
+                        <% } %>
+                    </div>
+                </div>
+                <% if (editing) { %>
+                <input type="hidden" value="<%= meeting._id %>" name="meetingId">
+                <% } %>
+                <div class="mb-3">
+                    <button type="submit" class="btn btn-primary"><% if (editing) { %>Update<% } else { %>Create<% } %></button>
+                </div>
+            </div>
+        </form>
+    </main>
+    </div>
+    </div>
+
+    <%- include('../includes/adminFooter.ejs') %>
+    <script src="/js/meetings.js" type="text/javascript"></script>
+    <script src="https://unpkg.com/gijgo@1.9.14/js/gijgo.min.js" type="text/javascript"></script>
+    <script>
+        $('#meetingDate').datepicker({
+            uiLibrary: 'bootstrap5',
+            header: true,
+            format: 'yyyy-mm-dd'
+        });
+    </script>
+</body>
+
+</html>

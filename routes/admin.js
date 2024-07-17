@@ -44,4 +44,42 @@ router.post(
     adminController.postEditUser
 );
 
+router.get(
+    '/meetings',
+    (res, req, next) => isAuth(res, req, next, 'admin'),
+    adminController.getMeetings
+);
+
+router.get(
+    '/meetings/create',
+    (res, req, next) => isAuth(res, req, next, 'admin'),
+    adminController.getCreateMeeting
+);
+
+router.post(
+    '/meetings/create',
+    (res, req, next) => isAuth(res, req, next, 'admin'),
+    ...validators.meeting,
+    adminController.postCreateMeeting
+);
+
+router.get(
+    '/meetings/edit',
+    (res, req, next) => isAuth(res, req, next, 'admin'),
+    adminController.getEditMeeting
+);
+
+router.post(
+    '/meetings/edit',
+    (res, req, next) => isAuth(res, req, next, 'admin'),
+    // ...validators.meeting,
+    adminController.postEditMeeting
+);
+
+router.get(
+    '/meetings/close',
+    (res, req, next) => isAuth(res, req, next, 'admin'),
+    adminController.getCloseMeeting
+);
+
 export default router;

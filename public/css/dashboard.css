@@ -71,3 +71,14 @@
   .invalid {
     border-color: var(--bs-danger);
   }
+
+  .open {
+    font-size: large;
+    color: green;
+    padding-right: 10px;
+  }
+  
+  .closed {
+    font-size: large;
+    color: red;
+  }
