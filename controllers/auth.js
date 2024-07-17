@@ -44,7 +44,7 @@ export async function postLogin(req, res, next) {
                 pageTitle: 'Login',
                 loginError: true,
                 oldInput: {
-                    email: username,
+                    username: username,
                     remember: remember
                 },
                 validationErrors: []
@@ -57,7 +57,7 @@ export async function postLogin(req, res, next) {
                 pageTitle: 'Login',
                 loginError: true,
                 oldInput: {
-                    email: email,
+                    username: username,
                     remember: remember
                 },
                 validationErrors: []
