@@ -12,4 +12,10 @@ router.get(
     mainController.getIndex
 );
 
+router.get(
+    '/vote/:meetingId',
+    (res, req, next) => isAuth(res, req, next, 'user'),
+    mainController.getVote
+);
+
 export default router;
