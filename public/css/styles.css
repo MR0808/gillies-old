@@ -10830,6 +10830,10 @@ textarea.form-control-lg {
   padding: 1rem;
 }
 
+.form-main {
+  max-width: 340px;
+}
+
 .form-signin .form-floating:focus-within {
   z-index: 2;
 }
@@ -10865,3 +10869,27 @@ textarea.form-control-lg {
 .menu_button:hover {
   color: var(--bs-nav-link-hover-color);
 }
+
+.row.table-head{
+  color: #000;
+  background: #dee2e6;
+  padding: 1rem;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.row.striped{
+  color: #000;
+  padding: 1rem;
+  background: #fff;
+}
+
+.row.striped:nth-child(odd){
+  background: #dee2e6;
+}
+
+/* @media (max-width: 767.98px) {
+  row.table-head{
+    display:none;
+  }
+} */

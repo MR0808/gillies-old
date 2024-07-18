@@ -5,19 +5,16 @@ const Schema = mongoose.Schema;
 var whiskySchema = new Schema(
     {
         name: String,
-        votes: [
-            {
-                user: {
-                    type: Schema.Types.ObjectId,
-                    ref: 'User'
-                },
-                score: Number
-            }
-        ],
         meeting: {
             type: Schema.Types.ObjectId,
             ref: 'Meeting'
-        }
+        },
+        votes: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: 'Vote'
+            }
+        ]
     },
     { timestamps: true }
 );

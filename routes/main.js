@@ -18,4 +18,10 @@ router.get(
     mainController.getVote
 );
 
+router.post(
+    '/vote',
+    (res, req, next) => isAuth(res, req, next, 'user'),
+    mainController.postVote
+);
+
 export default router;
