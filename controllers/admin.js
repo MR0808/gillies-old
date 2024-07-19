@@ -14,12 +14,19 @@ export const getIndex = (req, res, next) => {
 };
 
 export async function getUsers(req, res, next) {
-    const users = await User.find().sort('lastName');
-    res.render('admin/users', {
-        path: '/users',
-        pageTitle: 'Users',
-        users: users
-    });
+    try {
+        const users = await User.find().sort('lastName');
+        res.render('admin/users', {
+            path: '/users',
+            pageTitle: 'Users',
+            users: users
+        });
+    } catch (err) {
+        console.log(err);
+        const error = new Error(err);
+        error.httpStatusCode = 500;
+        return next(error);
+    }
 }
 
 export async function getCreateUser(req, res, next) {
@@ -105,9 +112,11 @@ export async function postEditUser(req, res, next) {
         user.username = body.username;
         user.firstName = body.firstName;
         user.lastName = body.lastName;
-        const hashedPassword = await bcrypt.hash(body.password, 12);
-        user.password = hashedPassword;
-        user.passwordLastUpdated = new Date();
+        if (body.password) {
+            const hashedPassword = await bcrypt.hash(body.password, 12);
+            user.password = hashedPassword;
+            user.passwordLastUpdated = new Date();
+        }
         await user.save();
         return res.redirect('/admin/users');
     } catch (err) {
@@ -118,31 +127,45 @@ export async function postEditUser(req, res, next) {
 }
 
 export async function getMeetings(req, res, next) {
-    const meetings = await Meeting.find().sort('meetingDate');
-    const updatedMeetings = meetings.map((meeting) => {
-        const meetingDate = DateTime.fromJSDate(meeting.meetingDate);
-        const newMeetingDate = meetingDate.toFormat('dd-LL-yyyy');
-        const newMeeting = { ...meeting._doc };
-        newMeeting.meetingDate = newMeetingDate;
-        return newMeeting;
-    });
-    res.render('admin/meetings', {
-        path: '/meetings',
-        pageTitle: 'Meetings',
-        meetings: updatedMeetings
-    });
+    try {
+        const meetings = await Meeting.find().sort('meetingDate');
+        const updatedMeetings = meetings.map((meeting) => {
+            const meetingDate = DateTime.fromJSDate(meeting.meetingDate);
+            const newMeetingDate = meetingDate.toFormat('dd-LL-yyyy');
+            const newMeeting = { ...meeting._doc };
+            newMeeting.meetingDate = newMeetingDate;
+            return newMeeting;
+        });
+        res.render('admin/meetings', {
+            path: '/meetings',
+            pageTitle: 'Meetings',
+            meetings: updatedMeetings
+        });
+    } catch (err) {
+        console.log(err);
+        const error = new Error(err);
+        error.httpStatusCode = 500;
+        return next(error);
+    }
 }
 
 export async function getCreateMeeting(req, res, next) {
-    const users = await User.find().sort('lastName');
-    res.render('admin/createMeeting', {
-        path: '/createMeeting',
-        pageTitle: 'Create Meeting',
-        editing: false,
-        hasError: false,
-        validationErrors: [],
-        users: users
-    });
+    try {
+        const users = await User.find().sort('lastName');
+        res.render('admin/createMeeting', {
+            path: '/createMeeting',
+            pageTitle: 'Create Meeting',
+            editing: false,
+            hasError: false,
+            validationErrors: [],
+            users: users
+        });
+    } catch (err) {
+        console.log(err);
+        const error = new Error(err);
+        error.httpStatusCode = 500;
+        return next(error);
+    }
 }
 
 export async function postCreateMeeting(req, res, next) {
@@ -287,6 +310,52 @@ export async function getCloseMeeting(req, res, next) {
         meeting.status = 'Closed';
         await meeting.save();
         return res.redirect('/admin/meetings');
+    } catch (err) {
+        console.log(err);
+        const error = new Error(err);
+        error.httpStatusCode = 500;
+        return next(error);
+    }
+}
+
+export async function getReports(req, res, next) {
+    try {
+        const meetings = await Meeting.find().sort('meetingDate');
+        const updatedMeetings = meetings.map((meeting) => {
+            const meetingDate = DateTime.fromJSDate(meeting.meetingDate);
+            const newMeetingDate = meetingDate.toFormat('dd-LL-yyyy');
+            const newMeeting = { ...meeting._doc };
+            newMeeting.meetingDate = newMeetingDate;
+            return newMeeting;
+        });
+        res.render('admin/reports', {
+            path: '/reports',
+            pageTitle: 'Reports',
+            meetings: updatedMeetings
+        });
+    } catch (err) {
+        console.log(err);
+        const error = new Error(err);
+        error.httpStatusCode = 500;
+        return next(error);
+    }
+}
+
+export async function getMeetingReport(req, res, next) {
+    try {
+        const meetingId = req.params.meetingId;
+        const meeting = await Meeting.findById(meetingId).populate({
+            path: 'whiskies',
+            populate: { path: 'votes' }
+        });
+        const meetingDate = DateTime.fromJSDate(meeting.meetingDate);
+        const newMeetingDate = meetingDate.toFormat('dd-LL-yyyy');
+        res.render('admin/meetingReport', {
+            path: '/meetingReport',
+            pageTitle: 'Meeting Report',
+            meeting: meeting,
+            meetingDate: newMeetingDate
+        });
     } catch (err) {
         console.log(err);
         const error = new Error(err);

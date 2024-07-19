@@ -1,0 +1,69 @@
+<%- include('../includes/adminHeader.ejs') %>
+
+<body>
+    <%- include('../includes/adminNav.ejs') %>
+
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2">Meeting - <%=meetingDate %></h1>
+        </div>
+        <div class="table-responsive small mt-3">
+            <% for (let whisky of meeting.whiskies) { %>
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h4><%=whisky.name %></h4>
+            </div>
+            <table class="table table-striped table-sm">
+                <thead>
+                    <tr>
+                        <th scope="col">Number of Votes</th>
+                        <th scope="col">Lowest</th>
+                        <th scope="col">Highest</th>
+                        <th scope="col">Average</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <td><%=whisky.votes.length %></td>
+                    <td><%
+                        if (whisky.votes.length > 0) {
+                            let min = 10;
+                            for (let vote of whisky.votes) {
+                                if (vote.score < min) 
+                                    min = vote.score; 
+                            }
+                        
+                        %><%=min %>
+                        <% } %></td>
+                    <td><%
+                        if (whisky.votes.length > 0) {
+                            let max = 0;
+                            for (let vote of whisky.votes) {
+                                if (vote.score > max) 
+                                    max = vote.score; 
+                            }
+                        
+                        %><%=max %>
+                        <% } %></td>
+                    <td><%
+                        if (whisky.votes.length > 0) {
+                        let total = 0;
+                        let length = whisky.votes.length
+                        for (let vote of whisky.votes) {
+                            total += vote.score; 
+                        }
+                        const avg = total/length;
+                    
+                    %><%=+avg.toFixed(2) %>
+                        <% } %></td>
+                </tbody>
+            </table>
+            <% } %>
+        </div>
+    </main>
+    </div>
+    </div>
+
+    <%- include('../includes/adminFooter.ejs') %>
+
+</body>
+
+</html>

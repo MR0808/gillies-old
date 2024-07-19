@@ -82,4 +82,16 @@ router.get(
     adminController.getCloseMeeting
 );
 
+router.get(
+    '/reports',
+    (res, req, next) => isAuth(res, req, next, 'admin'),
+    adminController.getReports
+);
+
+router.get(
+    '/reports/meeting/:meetingId',
+    (res, req, next) => isAuth(res, req, next, 'user'),
+    adminController.getMeetingReport
+);
+
 export default router;

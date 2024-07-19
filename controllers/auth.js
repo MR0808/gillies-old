@@ -51,6 +51,7 @@ export async function postLogin(req, res, next) {
             });
         }
         const doMatch = await bcrypt.compare(password, user.password);
+        console.log(doMatch);
         if (!doMatch) {
             return res.status(422).render('auth/login', {
                 path: '/login',

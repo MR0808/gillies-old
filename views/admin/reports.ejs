@@ -1,0 +1,56 @@
+<%- include('../includes/adminHeader.ejs') %>
+
+<body>
+    <%- include('../includes/adminNav.ejs') %>
+
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2">Meetings</h1>
+            <div class="btn-toolbar mb-2 mb-md-0">
+                <div class="btn-group me-2">
+                    <form action="/admin/meetings/create" method="GET">
+                        <button type="submit" class="btn btn-sm btn-outline-secondary">Add New</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="table-responsive small">
+            <table class="table table-striped table-sm">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Meeting Night</th>
+                        <th scope="col">Location</th>
+                        <th scope="col">Quaich</th>
+                        <th scope="col">Number of Whiskies</th>
+                        <th scope="col">Number of Attendees</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% 
+                    let count = 1;
+                    for (let meeting of meetings) { %>
+                    <tr>
+                        <td><%=count %></td>
+                        <td><a href="/admin/reports/meeting/<%=meeting._id %>"><%=meeting.meetingDate %></a></td>
+                        <td><%=meeting.meetingLocation %></td>
+                        <td><%=meeting.quaich %></td>
+                        <td><%=meeting.whiskies.length %></td>
+                        <td><%=meeting.users.length %></td>
+                    </tr>
+                    <% 
+                        count++;
+                    } 
+                    %>
+                </tbody>
+            </table>
+        </div>
+    </main>
+    </div>
+    </div>
+
+    <%- include('../includes/adminFooter.ejs') %>
+
+</body>
+
+</html>
