@@ -348,6 +348,7 @@ export async function getMeetingReport(req, res, next) {
             path: 'whiskies',
             populate: { path: 'votes' }
         });
+        console.log(meeting);
         const meetingDate = DateTime.fromJSDate(meeting.meetingDate);
         const newMeetingDate = meetingDate.toFormat('dd-LL-yyyy');
         res.render('admin/meetingReport', {
